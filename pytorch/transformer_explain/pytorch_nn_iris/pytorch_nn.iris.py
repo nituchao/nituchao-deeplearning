@@ -8,6 +8,7 @@ from sklearn import preprocessing
 ##############################################################################
 # 数据加载
 ##############################################################################
+dataset_iris = None
 class IrisDataSet(torch.utils.data.Dataset):
     def __init__(self, features, labels):
         self.features = features
@@ -33,9 +34,12 @@ def dataset_parser(filepath=''):
     return dataset_features, dataset_lables
     
 def dataset_loader(filepath='', batch_size=200):
-    dataset_features, dataset_lables = dataset_parser(filepath=filepath)
-
-    dataset_iris = IrisDataSet(dataset_features, dataset_lables)
+    global dataset_iris
+    if dataset_iris is None:
+        print('dataset_iris is None, csv will be loaded...')
+        dataset_features, dataset_lables = dataset_parser(filepath=filepath)
+        dataset_iris = IrisDataSet(dataset_features, dataset_lables)
+    
     dataset_train = torch.utils.data.DataLoader(dataset_iris, batch_size=batch_size, shuffle=True)
     dataset_test = torch.utils.data.DataLoader(dataset_iris, batch_size=batch_size, shuffle=True)
 
@@ -64,8 +68,9 @@ print(net)
 # 模型训练
 ##############################################################################
 learning_rate = 1e-3
-batch_size =  10
 log_interval = 10
+batch_size =  10
+epoch_num = 1000
 
 # 创建一个随机梯度下降（stochastic gradient descent）优化器
 optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9)
@@ -74,7 +79,6 @@ optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9)
 criterion = nn.NLLLoss()
 
 # 运行主训练循环
-epoch_num = 1000
 for epoch in range(epoch_num):
     # 数据加载
     dataset_train, _ = dataset_loader('./data/iris.csv', batch_size=batch_size)
@@ -92,7 +96,9 @@ for epoch in range(epoch_num):
             print('Train Epoch: {} [{}/{}] ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch + 1, epoch + 1,  epoch_num, 100. * epoch / epoch_num, loss))
 
+##############################################################################
 # 模型评估
+##############################################################################
 test_loss = 0
 correct = 0
 _, dataset_test = dataset_loader('./data/iris.csv', batch_size=batch_size)
