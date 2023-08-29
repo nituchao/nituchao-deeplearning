@@ -5,7 +5,9 @@ import torch.nn.functional as F
 import pandas as pd
 from sklearn import preprocessing
 
+##############################################################################
 # 数据加载
+##############################################################################
 class IrisDataSet(torch.utils.data.Dataset):
     def __init__(self, features, labels):
         self.features = features
@@ -99,14 +101,8 @@ for data, target in dataset_test:
     test_loss += criterion(net_out, target).data
     pred = net_out.data.max(1)[1]
     correct += pred.eq(target.data).sum()
-    print(target.data)
-    print(pred)
-    print(net_out.data)
-    print('------------------------------------')
 
 test_loss /= len(dataset_test.dataset)
 print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(dataset_test.dataset),
         100. * correct / len(dataset_test.dataset)))
-
-print(dataset_test)
