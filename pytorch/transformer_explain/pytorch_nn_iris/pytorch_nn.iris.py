@@ -41,7 +41,9 @@ def dataset_loader(filepath='', batch_size=200):
 
     return dataset_train, dataset_test
 
+##############################################################################
 # 网络定义
+##############################################################################
 class Net(nn.Module):
     def __init__(self) :
         super(Net, self).__init__()
