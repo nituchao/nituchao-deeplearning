@@ -156,8 +156,8 @@ class PoswiseFeedForwardNet(nn.Module):
 class EncoderLayer(nn.Module):
     def __init__(self):
         super(EncoderLayer, self).__init__()
-        self.enc_self_attn = MultiHeadAttention()                               # 多头注意力机制
-        self.pos_ffn = PoswiseFeedForwardNet()                                  # 前馈神经网络
+        self.enc_self_attn = MultiHeadAttention()                                   # 多头注意力机制
+        self.pos_ffn = PoswiseFeedForwardNet()                                      # 前馈神经网络
 
     def forward(self, enc_inputs, enc_self_attn_mask):                              # enc_inputs: [batch_size, src_len, d_model]
         # 输入3个enc_inputs分别于W_q, W_k, W_v相乘得到Q/K/V                            # enc_self_attn_mask: [batch_size, src_len, src_len]
